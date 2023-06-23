@@ -14,6 +14,8 @@ import type { ObjectEvents } from '../EventTypeDefs';
 export const rectDefaultValues: Partial<TClassProperties<Rect>> = {
   rx: 0,
   ry: 0,
+  originX: 'center',
+  originY: 'center',
 };
 
 interface UniqueRectProps {
@@ -23,20 +25,19 @@ interface UniqueRectProps {
 
 export interface SerializedRectProps
   extends SerializedObjectProps,
-    UniqueRectProps {}
+  UniqueRectProps { }
 
-export interface RectProps extends FabricObjectProps, UniqueRectProps {}
+export interface RectProps extends FabricObjectProps, UniqueRectProps { }
 
 const RECT_PROPS = ['rx', 'ry'] as const;
 
 export class Rect<
-    Props extends TProps<RectProps> = Partial<RectProps>,
-    SProps extends SerializedRectProps = SerializedRectProps,
-    EventSpec extends ObjectEvents = ObjectEvents
-  >
+  Props extends TProps<RectProps> = Partial<RectProps>,
+  SProps extends SerializedRectProps = SerializedRectProps,
+  EventSpec extends ObjectEvents = ObjectEvents
+>
   extends FabricObject<Props, SProps, EventSpec>
-  implements RectProps
-{
+  implements RectProps {
   /**
    * Horizontal border radius
    * @type Number
@@ -50,6 +51,12 @@ export class Rect<
    * @default
    */
   declare ry: number;
+
+  declare parentImage: any;
+
+  declare state: any;
+
+  declare actionType: any;
 
   static cacheProperties = [...cacheProperties, ...RECT_PROPS];
 
@@ -165,8 +172,7 @@ export class Rect<
     return [
       '<rect ',
       'COMMON_PARTS',
-      `x="${-width / 2}" y="${
-        -height / 2
+      `x="${-width / 2}" y="${-height / 2
       }" rx="${rx}" ry="${ry}" width="${width}" height="${height}" />\n`,
     ];
   }

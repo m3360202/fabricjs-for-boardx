@@ -149,7 +149,6 @@ export class Arrow extends Line {
           if (target.locked) return;
 
           const hoverTarget = this.canvas.findTarget(eventData);
-          console.log('hoverTarget', hoverTarget, target, hoverTarget === target);
           if (hoverTarget && hoverTarget.obj_type === 'WBArrow') return;
 
           if (hoverTarget) {
@@ -218,7 +217,6 @@ export class Arrow extends Line {
             hoverTarget.__corner = minPoint.dot;
 
             target.setConnectorObj(hoverTarget, minPoint, false, false);
-            // target.set('x2', minPoint.x).set('y2', minPoint.y);
           } else {
             //this.canvas.discardActiveObject();
 
@@ -2135,13 +2133,66 @@ export class Arrow extends Line {
 
   calcDistanceToTarget(current, target) {
     const { left, top, width, height, scaleX, scaleY } = target;
-    const canvasZoom = this.canvas.getZoom();
-    const range = 50 * scaleX * canvasZoom; // 计算范围时包括画布缩放
+    const range = 30;
 
-    const ml = { x: left - (width * scaleX) / 2 - 20 * scaleX * canvasZoom + 0.5, y: top };
-    const mr = { x: left + (width * scaleX) / 2 + 20 * scaleX * canvasZoom - 0.5, y: top };
-    const mt = { x: left, y: top - (height * scaleY) / 2 - 20 * scaleY * canvasZoom + 0.5 };
-    const mb = { x: left, y: top + (height * scaleY) / 2 + 20 * scaleY * canvasZoom - 0.5 };
+    const ml = { x: left - (width * scaleX) / 2, y: top };
+    const mr = { x: left + (width * scaleX) / 2, y: top };
+    const mt = { x: left, y: top - (height * scaleY) / 2 };
+    const mb = { x: left, y: top + (height * scaleY) / 2 };
+
+    if (current.y > mt.y && current.y < mb.y) {
+      if (current.x > ml.x && current.x < ml.x + range) {
+        return {
+          x: ml.x,
+          y: ml.y,
+          dot: 'mla'
+        };
+      }
+
+      if (current.x > mr.x - range && current.x < mr.x) {
+        return {
+          x: mr.x,
+          y: mr.y,
+          dot: 'mra'
+        };
+      }
+    }
+
+    if (current.x > ml.x && current.x < mr.x) {
+      if (current.y > mt.y && current.y < mt.y + range) {
+        return {
+          x: mt.x,
+          y: mt.y,
+          dot: 'mta'
+        };
+      }
+
+      if (current.y > mb.y - range && current.y < mb.y) {
+        return {
+          x: mb.x,
+          y: mb.y,
+          dot: 'mba'
+        };
+      }
+    }
+
+    return {
+      x: current.x - 5,
+      y: current.y - 5,
+      dot: 0
+    };
+  }
+  calcDistanceToControlPoint(current, target) {
+    const { left, top, width, height, scaleX, scaleY } = target;
+    if (this.canvas.getActiveObject().isEditing) {
+      this.canvas.getActiveObject().exitEditing()
+    }
+    const range = 30 // 计算范围时包括画布缩放
+
+    const ml = { x: left - (width * scaleX) / 2, y: top };
+    const mr = { x: left + (width * scaleX) / 2, y: top };
+    const mt = { x: left, y: top - (height * scaleY) / 2 };
+    const mb = { x: left, y: top + (height * scaleY) / 2 };
 
     if (current.y > mt.y && current.y < mb.y) {
       if (current.x > ml.x && current.x < ml.x + range) {

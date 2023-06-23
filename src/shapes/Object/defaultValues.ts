@@ -85,7 +85,7 @@ export const fabricObjectDefaultValues = {
   visible: true,
   hasControls: true,
   hasBorders: true,
-  perPixelTargetFind: false,
+  perPixelTargetFind: true,
   includeDefaultValues: true,
   lockMovementX: false,
   lockMovementY: false,

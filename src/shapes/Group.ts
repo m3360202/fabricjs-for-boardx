@@ -26,7 +26,6 @@ import {
   SerializedObjectProps,
   TProps,
 } from './Object/types';
-import { createPathDefaultControls } from '../controls/commonControls';
 
 export type LayoutContextType =
   | 'initialization'
@@ -103,6 +102,7 @@ export const groupDefaultValues = {
   strokeWidth: 0,
   subTargetCheck: false,
   interactive: false,
+  obj_type: 'WBGroup',
 };
 
 /**
@@ -113,7 +113,6 @@ export const groupDefaultValues = {
 export class Group extends createCollectionMixin(
   FabricObject<GroupProps, SerializedGroupProps, GroupEvents>
 ) {
-  declare obj_type: string;
   /**
    * Specifies the **layout strategy** for instance
    * Used by `getLayoutStrategyResult` to calculate layout
@@ -138,7 +137,6 @@ export class Group extends createCollectionMixin(
    * @type boolean
    */
   declare interactive: boolean;
-
   /* boardx cusotm function */
   declare subTargetCheck: boolean;
 
@@ -150,6 +148,8 @@ export class Group extends createCollectionMixin(
 
   declare userId: string;
 
+  declare userNo: string;
+
   declare timestamp: Date;
 
   declare verticalAlign: string;
@@ -160,8 +160,21 @@ export class Group extends createCollectionMixin(
 
   declare icon: string;
 
-  public extendPropeties = ['subTargetCheck', 'obj_type', 'whiteboardId', 'userId', 'timestamp', 'zIndex', 'locked', 'verticalAlign', 'lines', 'icon'];
+  declare _id: string;
 
+  declare selectable: boolean;
+
+  declare objectArr: any[];
+
+  declare subObjList: any[];
+
+  declare relationship: any[];
+
+  declare panelObj: boolean;
+
+  declare objectCaching: boolean;
+
+  public extendPropeties = ['subTargetCheck', 'obj_type', 'whiteboardId', 'userId', 'timestamp', 'zIndex', 'locked', 'verticalAlign', 'lines', 'icon', '_id', 'selectable', 'objectArr', 'subObjList', 'relationship', 'userNo', 'panelObj', 'objectCaching'];
   /**
    * Used internally to optimize performance
    * Once an object is selected, instance is rendered without the selected object.
@@ -183,7 +196,6 @@ export class Group extends createCollectionMixin(
   static getDefaults(): Record<string, any> {
     return {
       ...super.getDefaults(),
-      controls: createPathDefaultControls(),
       ...Group.ownDefaults,
     };
   }
@@ -494,7 +506,7 @@ export class Group extends createCollectionMixin(
           object.calcTransformMatrix()
         )
       );
-      //object.setCoords();
+      object.setCoords();
     }
     this._watchObject(false, object);
     const index =
@@ -1083,23 +1095,6 @@ export class Group extends createCollectionMixin(
       visibility = this.visible ? '' : ' visibility: hidden;';
     return [opacity, this.getSvgFilter(), visibility].join('');
   }
-
-  /**
-   * Returns svg clipPath representation of an instance
-   * @param {Function} [reviver] Method for further parsing of svg representation.
-   * @return {String} svg representation of an instance
-   */
-  toClipPathSVG(reviver?: TSVGReviver) {
-    const svgString = [];
-    const bg = this._createSVGBgRect(reviver);
-    bg && svgString.push('\t', bg);
-    for (let i = 0; i < this._objects.length; i++) {
-      svgString.push('\t', this._objects[i].toClipPathSVG(reviver));
-    }
-    return this._createBaseClipPathSVGMarkup(svgString, {
-      reviver,
-    });
-  }
   /**boardx cusotm function */
   getWidgetMenuList() {
     if (this.locked) {
@@ -1212,6 +1207,23 @@ export class Group extends createCollectionMixin(
   }
 
   /**boardx cusotm function */
+  /**
+   * Returns svg clipPath representation of an instance
+   * @param {Function} [reviver] Method for further parsing of svg representation.
+   * @return {String} svg representation of an instance
+   */
+  toClipPathSVG(reviver?: TSVGReviver) {
+    const svgString = [];
+    const bg = this._createSVGBgRect(reviver);
+    bg && svgString.push('\t', bg);
+    for (let i = 0; i < this._objects.length; i++) {
+      svgString.push('\t', this._objects[i].toClipPathSVG(reviver));
+    }
+    return this._createBaseClipPathSVGMarkup(svgString, {
+      reviver,
+    });
+  }
+
   /**
    * @todo support loading from svg
    * @private
