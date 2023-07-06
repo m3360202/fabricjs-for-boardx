@@ -19,7 +19,7 @@ import { StaticCanvas, TCanvasSizeOptions } from './StaticCanvas';
 import { isCollection } from '../util/types';
 import { invertTransform, transformPoint } from '../util/misc/matrix';
 import { isTransparent } from '../util/misc/isTransparent';
-import { AssertKeys, TMat2D, TOriginX, TOriginY, TSize } from '../typedefs';
+import { TMat2D, TOriginX, TOriginY, TSize } from '../typedefs';
 import { degreesToRadians } from '../util/misc/radiansDegreesConversion';
 import { getPointer, isTouchEvent } from '../util/dom_event';
 import type { IText } from '../shapes/IText/IText';
@@ -970,7 +970,6 @@ export class SelectableCanvas<
         }
       }
     }
-
     return this.searchPossibleTargets(this._objects, pointer);
   }
 
@@ -1303,7 +1302,12 @@ export class SelectableCanvas<
       if (active === this._activeSelection) {
         return [...(active as ActiveSelection)._objects];
       } else {
-        return [active];
+        if (active.obj_type === 'WBGroup') {
+          return [...(active as ActiveSelection)._objects];
+        } else {
+          return [active];
+        }
+
       }
     }
     return [];
@@ -1377,7 +1381,7 @@ export class SelectableCanvas<
   setActiveObject(
     object: FabricObject,
     e?: TPointerEvent
-  ): this is AssertKeys<this, '_activeObject'> {
+  ) {
     // we can't inline this, since _setActiveObject will change what getActiveObjects returns
     const currentActives = this.getActiveObjects();
     const selected = this._setActiveObject(object, e);
@@ -1396,7 +1400,7 @@ export class SelectableCanvas<
   _setActiveObject(
     object: FabricObject,
     e?: TPointerEvent
-  ): this is AssertKeys<this, '_activeObject'> {
+  ) {
     if (this._activeObject === object) {
       return false;
     }
