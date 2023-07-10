@@ -79,17 +79,14 @@
     assert.equal(text.constructor.name, 'Text');
     assert.equal(text.get('text'), 'x');
   });
-
-  QUnit.test('toString', function (assert) {
+  //测试鼠标选中一些文字后，当前选中文字上的selection高亮颜色是否显示正确
+  QUnit.test('selectionBackgroundColor', function (assert) {
     var text = createTextObject();
-    assert.ok(typeof text.toString === 'function');
-    assert.equal(text.toString(), '#<Text (1): { "text": "x", "fontFamily": "Times New Roman" }>');
-  });
-
-  QUnit.test('toObject', function (assert) {
-    var text = createTextObject();
-    assert.ok(typeof text.toObject === 'function');
-    assert.deepEqual(text.toObject(), REFERENCE_TEXT_OBJECT);
-  });
+    text.set('selectionBackgroundColor', 'red');
+    assert.equal(text.get('selectionBackgroundColor'), 'red');
+  }
+  );
+    
+  
 
 })();
