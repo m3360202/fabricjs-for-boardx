@@ -305,26 +305,7 @@ export class RectNotes extends Textbox {
     this.isWrapping = false;
     return wrapped;
   }
-  graphemeSplitForRectNotes(textstring: string): string[] {
-    const graphemes = [];
-    const wordJoiners = /[ \t\r]/;
-    const words = textstring.split(wordJoiners);
-    words.forEach((word, index) => {
-      if (index !== 0) {
-        word = ' ' + word;
-      }
-      if (/^[\u4e00-\u9fa5]+$/.test(word)) {  // 如果是中文
-        graphemes.push(...word.split(''));  // 把每个中文字符作为一个独立元素
-      } else if (/^[A-Za-z]+$/.test(word)) {  // 如果是英文
-        if (word.length <= 14) {  // 如果长度小于等于14
-          graphemes.push(word);  // 作为一个独立元素
-        } else {  // 如果长度大于14
-          graphemes.push(...word.split(''));  // 把每个字母作为一个独立元素
-        }
-      }
-    });
-    return graphemes;
-  };
+
   /**
    * Helper function to measure a string of text, given its lineIndex and charIndex offset
    * It gets called when charBounds are not available yet.
@@ -374,6 +355,23 @@ export class RectNotes extends Textbox {
    * @returns {Array} Array of line(s) into which the given text is wrapped
    * to.
    */
+
+  graphemeSplitForRectNotes(textstring: string): string[] {
+    const graphemes = [];
+    const words = textstring.split(/\b/);
+    for (let i = 0; i < words.length; i++) {
+      // 检查单词是否全为拉丁字母，长度不大于13，且没有四个或更多的连续相同的字母
+      if (/^[a-zA-Z]+$/.test(words[i]) && words[i].length <= 13 && !(/(\w)\1{3,}/.test(words[i]))) {
+        graphemes.push(words[i]);
+      } else {
+        for (let j = 0; j < words[i].length; j++) {
+          graphemes.push(words[i][j]);
+        }
+      }
+    }
+    return graphemes;
+  };
+
   _wrapLine(
     _line,
     lineIndex: number,
@@ -384,7 +382,7 @@ export class RectNotes extends Textbox {
       splitByGrapheme = this.splitByGrapheme,
       graphemeLines = [],
       words = splitByGrapheme
-        ? this.graphemeSplit(_line)
+        ? this.graphemeSplitForRectNotes(_line)
         : this.wordSplit(_line),
       infix = splitByGrapheme ? '' : ' ';
 
@@ -403,7 +401,7 @@ export class RectNotes extends Textbox {
     // measure words
     const data = words.map((word) => {
       // if using splitByGrapheme words are already in graphemes.
-      word = splitByGrapheme ? word : this.graphemeSplit(word);
+      word = splitByGrapheme ? word : this.graphemeSplitForRectNotes(word);
       const width = this._measureWord(word, lineIndex, offset);
       largestWordWidth = Math.max(width, largestWordWidth);
       offset += word.length + 1;

@@ -28,24 +28,17 @@ export const escapeXml = (string: string): string =>
  * @param {String} textstring String to escape
  * @return {Array} array containing the graphemes
  */
+
 export const graphemeSplit = (textstring: string): string[] => {
   const graphemes = [];
-  const wordRegex = /^[a-zA-Z]{1,13}\b/;
-  for (let i = 0; i < textstring.length;) {
-    // 如果字符后的字符串组成一个长度不大于13个的单词，则将整个单词作为元素添加到数组
-    if (wordRegex.test(textstring.slice(i))) {
-      const word = textstring.slice(i).match(wordRegex)[0]
-      graphemes.push(word);
-      i += word.length;
-    } else { // 否则，将字符添加到数组
-      const char = textstring[i]
-      graphemes.push(char);
-      i++;
+  for (let i = 0, chr; i < textstring.length; i++) {
+    if ((chr = getWholeChar(textstring, i)) === false) {
+      continue;
     }
+    graphemes.push(chr as string);
   }
   return graphemes;
 };
-
 // taken from mdn in the charAt doc page.
 const getWholeChar = (str: string, i: number): string | boolean => {
   const code = str.charCodeAt(i);
