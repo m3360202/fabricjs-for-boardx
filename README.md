@@ -39,17 +39,17 @@ v6 is a **MAJOR** effort including migrating to TS and es6, countless fixes, rew
 Currently in beta, refer to [#8299](../../issues/8299) for guidance.
 
 ```bash
-$ npm install fabric@beta --save
+$ npm install boardx-canvasx --save
 // or
-$ yarn add fabric@beta
+$ yarn add boardx-canvasx
 ```
 
 ## Installation
 
 ```bash
-$ npm install fabric --save
+$ npm install boardx-canvasx  --save
 // or
-$ yarn add fabric
+$ yarn add boardx-canvasx
 ```
 
 #### Browser
