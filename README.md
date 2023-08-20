@@ -1,39 +1,12 @@
-# Fabric.js
+# Fabric.js v6 beta 6.8 for boardx
 
-<a href="http://fabricjs.com/kitchensink" target="_blank"><img align="right" src="/lib/screenshot.png" style="width:400px"></a>
+<a target="_blank"><img align="right" src="/lib/screenshot.png" style="width:400px"></a>
 
 A **simple and powerful Javascript HTML5 canvas library**.
 
-- [**Website**][website]
-- [**GOTCHAS**][gotchas]
-- [**Contributing, Developing and More**](CONTRIBUTING.md)
-
----
-
-<!-- build/coverage status, climate -->
-
-[![🩺](../../actions/workflows/build.yml/badge.svg)](../../actions/workflows/build.yml)
-[![🧪](../../actions/workflows/tests.yml/badge.svg)](../../actions/workflows/tests.yml)
-[![CodeQL](../../actions/workflows/codeql-analysis.yml/badge.svg)](../../actions/workflows/codeql-analysis.yml)
-
----
-
-<!-- npm, bower, CDNJS versions, downloads -->
-
-[![cdnjs](https://img.shields.io/cdnjs/v/fabric.js.svg)][cdnjs]
-[![jsdelivr](https://data.jsdelivr.com/v1/package/npm/fabric/badge)][jsdelivr]
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/fabricjs/fabric.js)
-
-[![NPM](https://badge.fury.io/js/fabric.svg)](http://badge.fury.io/js/fabric)
-[![Downloads per month](https://img.shields.io/npm/dm/fabric.svg)](https://www.npmjs.org/package/fabric)
-[![Bower](https://badge.fury.io/bo/fabric.svg)](http://badge.fury.io/bo/fabric)
-
----
-
-[![Sponsor asturur](https://img.shields.io/static/v1?label=Sponsor%20asturur&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/asturur)
-[![Sponsor melchiar](https://img.shields.io/static/v1?label=Sponsor%20melchiar&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/melchiar)
-[![Sponsor ShaMan123](https://img.shields.io/static/v1?label=Sponsor%20ShaMan123&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/ShaMan123)
-[![Patreon](https://img.shields.io/static/v1?label=Patreon&message=%F0%9F%91%8D&logo=Patreon&color=blueviolet)](https://www.patreon.com/fabricJS)
+- [**FabricJs Website**][website]
+- [**BoardX Website**][gotchas]
+- [**Contributing, Developing and More**](contributor)
 
 ---
 
@@ -236,7 +209,7 @@ See our ready to use [templates](./.codesandbox/templates/).
 [codepens]: https://codepen.io/tag/fabricjs
 [contributors]: https://github.com/fabricjs/fabric.js/graphs/contributors
 [demos]: http://fabricjs.com/demos/
-[gotchas]: http://fabricjs.com/fabric-gotchas
+[gotchas]: https://app.boardx.us
 [html-to-image]: https://github.com/bubkoo/html-to-image
 [jsdelivr]: https://www.jsdelivr.com/package/npm/fabric
 [jsdom]: https://github.com/jsdom/jsdom
@@ -255,3 +228,4 @@ See our ready to use [templates](./.codesandbox/templates/).
 [three.js]: https://github.com/mrdoob/three.js/
 [twitter]: https://twitter.com/fabricjs
 [website]: http://fabricjs.com/
+[contributor]: https://share.boardx.us//
