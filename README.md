@@ -70,11 +70,11 @@ Follow these [instructions][node_canvas_install] to get `node-canvas` up and run
 
 ```js
 // v6
-import { Canvas, Rect } from 'fabric'; // browser
-import { StaticCanvas, Rect } from 'fabric/node'; // node
+import { Canvas, Rect } from 'boardx-canvasx'; // browser
+import { StaticCanvas, Rect } from 'boardx-canvasx/node'; // node
 
 // v5
-import { fabric } from 'fabric';
+import { fabric } from 'boardx-canvasx';
 ```
 
 <details><summary><b>Plain HTML</b></summary>
