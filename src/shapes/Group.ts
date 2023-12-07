@@ -143,7 +143,7 @@ export class Group extends createCollectionMixin(
    * @type boolean
    */
   declare interactive: boolean;
-  /* boardx cusotm function */
+  /*  cusotm function */
   declare subTargetCheck: boolean;
 
   declare obj_type: string;
@@ -1103,7 +1103,7 @@ export class Group extends createCollectionMixin(
       visibility = this.visible ? '' : ' visibility: hidden;';
     return [opacity, this.getSvgFilter(), visibility].join('');
   }
-  /**boardx cusotm function */
+  /** cusotm function */
   getWidgetMenuList() {
     if (this.locked) {
       return ['objectLock'];
@@ -1214,7 +1214,7 @@ export class Group extends createCollectionMixin(
     return menuList;
   }
 
-  /**boardx cusotm function */
+  /** cusotm function */
   /**
    * Returns svg clipPath representation of an instance
    * @param {Function} [reviver] Method for further parsing of svg representation.

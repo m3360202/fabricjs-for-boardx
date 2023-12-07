@@ -62,7 +62,7 @@ export class UrlImage<
 
     declare minWidth: number;
 
-    /* boardx cusotm function */
+    /*  cusotm function */
     declare _id: string;
 
     declare obj_type: string;

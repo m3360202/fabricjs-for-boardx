@@ -36,7 +36,7 @@ export class ShapeNotes extends Textbox {
    */
   declare minWidth: number;
 
-  /* boardx cusotm function */
+  /*  cusotm function */
   declare _id: string;
 
   declare obj_type: string;
@@ -654,7 +654,7 @@ export class ShapeNotes extends Textbox {
     );
 
   }
-  /**boardx custom function */
+  /** custom function */
   getObjectsIntersected() {
     const objects = this.canvas._getIntersectedObjects(this);
     objects.filter(obj => {

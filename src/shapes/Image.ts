@@ -167,7 +167,7 @@ export class Image<
 
   declare resizeFilter: BaseFilter;
 
-  /* boardx cusotm function */
+  /*  cusotm function */
   declare obj_type: string;
 
   declare locked: boolean;
@@ -418,7 +418,7 @@ export class Image<
     return object;
   }
 
-  /*boardx custom function */
+  /* custom function */
   getWidgetMenuList() {
     if (this.locked) {
       return ['objectLock'];

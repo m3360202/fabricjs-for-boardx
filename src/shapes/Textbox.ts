@@ -31,7 +31,7 @@ export class Textbox extends IText {
    */
   declare minWidth: number;
 
-  /* boardx cusotm function */
+  /*  cusotm function */
   declare obj_type: string;
 
   declare hasNoText: boolean;

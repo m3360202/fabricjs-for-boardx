@@ -36,7 +36,7 @@ export class RectNotes extends Textbox {
    */
   declare minWidth: number;
 
-  /* boardx cusotm function */
+  /*  cusotm function */
   declare _id: string;
 
   declare obj_type: string;
@@ -591,7 +591,7 @@ export class RectNotes extends Textbox {
     );
 
   }
-  /**boardx custom function */
+  /** custom function */
 
   getWidgetMenuList() {
     if (this.isDraw) {

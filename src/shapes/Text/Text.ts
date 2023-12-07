@@ -142,7 +142,7 @@ export class Text<
    */
   declare _reWords: RegExp;
 
-  /*boardx custom function start*/
+  /* custom function start*/
 
   declare _id: string;
 
@@ -187,7 +187,7 @@ export class Text<
   declare oneLine: boolean;
 
   declare verticalAlign: string;
-  /*boardx custom function end*/
+  /* custom function end*/
 
   declare text: string;
 

@@ -60,7 +60,7 @@ export class WBFile<
 
   declare minWidth: number;
 
-  /* boardx cusotm function */
+  /*  cusotm function */
   declare _id: string;
 
   declare obj_type: string;
@@ -138,7 +138,7 @@ export class WBFile<
       this.on('mousedblclick', () => {
         if (this.src || !this.isUploading) {
           //@ts-ignore
-          if (Boardx.Util.isMobile()) {
+          if (Util.isMobile()) {
             getWindow().parent.location.href = this.fileSrc ? this.fileSrc : this.src;
           } else if (this.isFileVideo(this.name)) {
             store.dispatch(handleSetVideoUrl(this.src));

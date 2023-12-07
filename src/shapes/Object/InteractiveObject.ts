@@ -671,7 +671,7 @@ export class InteractiveFabricObject<
   renderDropTargetEffect(this: AssertKeys<this, 'canvas'>, e: DragEvent) {
     // for subclasses
   }
-  /*BOARDX CUSTOM FUNCTIONS */
+  /* CUSTOM FUNCTIONS */
   getWidgetMenuTouchList = () => [
     'objectDelete',
     'moreMenuStickyNote'

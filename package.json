@@ -1,8 +1,8 @@
 {
-  "name": "boardx-canvasx",
+  "name": "martin-fabric",
   "description": "Object model for HTML5 canvas, and SVG-to-canvas parser. Backed by jsdom and node-canvas.",
-  "homepage": "https://www.boardx.us/",
-  "version": "6.0.0-beta8.5",
+  "homepage": "https://canvas.aliensoft.com.cn/",
+  "version": "6.0.0-beta8.6",
   "author": "Martin <403028240@qq.com>",
   "contributors": [
     {

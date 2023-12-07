@@ -66,7 +66,7 @@ export class Arrow extends Line {
    */
   declare y2: number;
 
-  /*boardx custom declare*/
+  /* custom declare*/
   declare _id: string;
 
   declare obj_type: string;

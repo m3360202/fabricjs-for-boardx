@@ -688,7 +688,7 @@ export class IText<
     this.draggableTextDelegate.dispose();
     super.dispose();
   }
-  /* boardx extend function */
+  /*  extend function */
   getWidgetMenuList() {
     if (this.locked) {
       return ['objectLock'];

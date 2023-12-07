@@ -110,7 +110,7 @@ export const textDefaultValues: Partial<TClassProperties<Text>> = {
   CACHE_FONT_SIZE: 400,
   MIN_TEXT_WIDTH: 2,
 
-  /*boardx extend values*/
+  /* extend values*/
   _id: '',
   editable: true,
   fixedScaleChange: true,

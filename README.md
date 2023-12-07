@@ -1,11 +1,11 @@
-# Fabric.js v6 beta 6.8 for boardx
+# Fabric.js v6 beta 6.8 for
 
 <a target="_blank"><img align="right" src="/lib/screenshot.png" style="width:400px"></a>
 
 A **simple and powerful Javascript HTML5 canvas library**.
 
 - [**FabricJs Website**][website]
-- [**BoardX Website**][gotchas]
+- [** Website**][gotchas]
 - [**Contributing, Developing and More**](contributor)
 
 ---
@@ -39,17 +39,17 @@ v6 is a **MAJOR** effort including migrating to TS and es6, countless fixes, rew
 Currently in beta, refer to [#8299](../../issues/8299) for guidance.
 
 ```bash
-$ npm install boardx-canvasx --save
+$ npm install martin-fabric --save
 // or
-$ yarn add boardx-canvasx
+$ yarn add martin-fabric
 ```
 
 ## Installation
 
 ```bash
-$ npm install boardx-canvasx  --save
+$ npm install martin-fabric  --save
 // or
-$ yarn add boardx-canvasx
+$ yarn add martin-fabric
 ```
 
 #### Browser
@@ -209,7 +209,7 @@ See our ready to use [templates](./.codesandbox/templates/).
 [codepens]: https://codepen.io/tag/fabricjs
 [contributors]: https://github.com/fabricjs/fabric.js/graphs/contributors
 [demos]: http://fabricjs.com/demos/
-[gotchas]: https://app.boardx.us
+[gotchas]: https://app..us
 [html-to-image]: https://github.com/bubkoo/html-to-image
 [jsdelivr]: https://www.jsdelivr.com/package/npm/fabric
 [jsdom]: https://github.com/jsdom/jsdom
@@ -228,4 +228,4 @@ See our ready to use [templates](./.codesandbox/templates/).
 [three.js]: https://github.com/mrdoob/three.js/
 [twitter]: https://twitter.com/fabricjs
 [website]: http://fabricjs.com/
-[contributor]: https://share.boardx.us//
+[contributor]: https://share..us//

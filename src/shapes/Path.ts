@@ -65,7 +65,7 @@ export class Path<
 
   static cacheProperties = [...cacheProperties, 'path', 'fillRule'];
 
-  /*boardx custom declare*/
+  /* custom declare*/
   declare obj_type: string;
 
   declare locked: boolean;
@@ -468,7 +468,7 @@ export class Path<
       })
     );
   }
-  /**boardx custom function */
+  /** custom function */
   getWidgetMenuList() {
     if (this.locked) return ['objectLock'];
     return [

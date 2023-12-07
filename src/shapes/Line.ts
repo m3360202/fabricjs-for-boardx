@@ -66,7 +66,7 @@ export class Line<
    */
   declare y2: number;
 
-  /*boardx custom declare*/
+  /* custom declare*/
   declare obj_type: string;
 
   declare locked: boolean;
@@ -277,7 +277,7 @@ export class Line<
   }
 
   /* _FROM_SVG_END_ */
-  /** boardx custom function */
+  /**  custom function */
   getWidgetMenuList() {
     if (this.locked) {
       return ['objectLock'];
