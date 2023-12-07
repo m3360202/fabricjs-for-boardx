@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { TClassProperties } from '../typedefs';
+import type { TClassProperties } from '../typedefs';
 import { IText } from './IText/IText';
 import { classRegistry } from '../ClassRegistry';
-import { renderCircleControl } from '../controls/controlRendering';
-import { Control } from '../controls/Control';
+import { createTextboxDefaultControls } from '../controls/commonControls';
+
 // @TODO: Many things here are configuration related and shouldn't be on the class nor prototype
 // regexes, list of properties that are not suppose to change by instances, magic consts.
 // this will be a separated effort
@@ -14,7 +14,7 @@ export const textboxDefaultValues: Partial<TClassProperties<Textbox>> = {
   noScaleCache: false,
   _wordJoiners: /[ \t\r]/,
   splitByGrapheme: true,
-  obj_type: 'WBTextbox',
+  obj_type: 'WBText'
 };
 
 /**
@@ -31,10 +31,6 @@ export class Textbox extends IText {
    */
   declare minWidth: number;
 
-  /*  cusotm function */
-  declare obj_type: string;
-
-  declare hasNoText: boolean;
   /**
    * Minimum calculated width of a textbox, in pixels.
    * fixed to 2 so that an empty textbox cannot go to 0
@@ -44,9 +40,6 @@ export class Textbox extends IText {
    */
   declare dynamicMinWidth: number;
 
-  declare oneLine: boolean;
-
-  declare fromCopy: boolean;
   /**
    * Use this boolean property in order to split strings that have no white space concept.
    * this is a cheap way to help with chinese/japanese
@@ -62,23 +55,11 @@ export class Textbox extends IText {
   static getDefaults() {
     return {
       ...super.getDefaults(),
+      controls: createTextboxDefaultControls(),
       ...Textbox.ownDefaults,
     };
   }
-  constructor(text: string, options: any) {
-    super(text, options);
-    if (this.obj_type !== 'WBText' && this.obj_type !== 'WBTextbox') {
-      this.addControls();
-    }
-    this.InitializeEvent();
-  }
 
-  InitializeEvent() {
-    return true;
-  }
-  changeWidth(eventData, transform, x, yr) {
-    return true;
-  }
   /**
    * Unlike superclass's version of this function, Textbox does not update
    * its width.
@@ -106,6 +87,7 @@ export class Textbox extends IText {
     // clear cache and re-calculate height
     this.height = this.calcTextHeight();
   }
+
   /**
    * Generate an object that translates the style object so that it is
    * broken up by visual lines (new lines and automatic wrapping).
@@ -334,22 +316,6 @@ export class Textbox extends IText {
    * @returns {Array} Array of line(s) into which the given text is wrapped
    * to.
    */
-  graphemeSplitForRectNotes(textstring: string): string[] {
-    const graphemes = [];
-    const words = textstring.split(/\b/);
-    for (let i = 0; i < words.length; i++) {
-      // 检查单词是否全为拉丁字母，长度不大于16
-      if (/^[a-zA-Z]{1,16}$/.test(words[i])) {
-        graphemes.push(words[i]);
-      } else {
-        for (let j = 0; j < words[i].length; j++) {
-          graphemes.push(words[i][j]);
-        }
-      }
-    }
-    return graphemes;
-  };
-
   _wrapLine(
     _line,
     lineIndex: number,
@@ -360,7 +326,7 @@ export class Textbox extends IText {
       splitByGrapheme = this.splitByGrapheme,
       graphemeLines = [],
       words = splitByGrapheme
-        ? this.graphemeSplitForRectNotes(_line)
+        ? this.graphemeSplit(_line)
         : this.wordSplit(_line),
       infix = splitByGrapheme ? '' : ' ';
 
@@ -379,12 +345,13 @@ export class Textbox extends IText {
     // measure words
     const data = words.map((word) => {
       // if using splitByGrapheme words are already in graphemes.
-      word = splitByGrapheme ? word : this.graphemeSplitForRectNotes(word);
+      word = splitByGrapheme ? word : this.graphemeSplit(word);
       const width = this._measureWord(word, lineIndex, offset);
       largestWordWidth = Math.max(width, largestWordWidth);
       offset += word.length + 1;
       return { word: word, width: width };
     });
+
     const maxWidth = Math.max(
       desiredWidth,
       largestWordWidth,
@@ -411,12 +378,7 @@ export class Textbox extends IText {
       if (!lineJustStarted && !splitByGrapheme) {
         line.push(infix);
       }
-      if (word.length > 1) {
-        line = line.concat(word.split(''));
-      } else {
-        line = line.concat(word);
-      }
-
+      line = line.concat(word);
 
       infixWidth = splitByGrapheme
         ? 0
@@ -471,24 +433,9 @@ export class Textbox extends IText {
    * @override
    */
   _splitTextIntoLines(text: string) {
-    const newText = super._splitTextIntoLines(text);
-    if (!this.fromCopy) {
-      if ((this.obj_type === 'WBText' || this.obj_type === 'WBTextbox') && this.textLines && this.textLines.length > 1 && this.isEditing) {
-        this.oneLine = false;
-      }
-      else {
-        this.oneLine = true;
-      }
-    } else {
-      this.oneLine = false;
-    }
-    if ((this.obj_type === 'WBText' || this.obj_type === 'WBTextbox') && newText && newText.lines && this.oneLine && this.isEditing) {
-      if (newText.lines[0].length > 1) {
-        this.width = this._measureWord(newText.lines[0], 0, 0) > this.width ? this._measureWord(newText.lines[0], 0, 0) + 10 : this.width;
-      }
-    }
-    const graphemeLines = this._wrapText(newText.lines, this.width);
-    const lines = new Array(graphemeLines.length);
+    const newText = super._splitTextIntoLines(text),
+      graphemeLines = this._wrapText(newText.lines, this.width),
+      lines = new Array(graphemeLines.length);
     for (let i = 0; i < graphemeLines.length; i++) {
       lines[i] = graphemeLines[i].join('');
     }
@@ -514,147 +461,18 @@ export class Textbox extends IText {
       }
     }
   }
-  addControls() {
-    function renderCustomControl(ctx, left, top, fabricObject) {
-      const styleOverride1 = {
-        cornerSize: 10,
-        cornerStrokeColor: this.isHovering ? '#31A4F5' : '#b3cdfd',
-        cornerColor: this.isHovering ? '#31A4F5' : '#b3cdfd',
-        lineWidth: 2
-      };
-      renderCircleControl.call(
-        fabricObject,
-        ctx,
-        left,
-        top,
-        styleOverride1,
-        fabricObject
-      );
-    }
 
-    this.controls.mtaStart = new Control({
-      x: 0,
-      y: -0.5,
-      offsetX: 0,
-      offsetY: -20,
-      render: renderCustomControl,
-      mouseDownHandler: (eventData, transformData) => {
-        this.controlMousedownProcess(transformData, 0.0, -0.5);
-        return true;
-      },
-      name: 'mtaStart'
-    });
-
-    this.controls.mbaStart = new Control({
-      x: 0,
-      y: 0.5,
-      offsetX: 0,
-      offsetY: 20,
-      render: renderCustomControl,
-      mouseDownHandler: (eventData, transformData) => {
-        this.controlMousedownProcess(transformData, 0.0, 0.5);
-        return true;
-      },
-      name: 'mbaStart'
-    });
-
-    this.controls.mlaStart = new Control({
-      x: -0.5,
-      y: 0,
-      offsetX: -20,
-      offsetY: 0,
-      render: renderCustomControl,
-      mouseDownHandler: (eventData, transformData) => {
-        this.controlMousedownProcess(transformData, -0.5, 0.0);
-        return true;
-      },
-      name: 'mlaStart'
-    });
-
-    this.controls.mraStart = new Control({
-      x: 0.5,
-      y: 0,
-      offsetX: 20,
-      offsetY: 0,
-      render: renderCustomControl,
-      mouseDownHandler: (eventData, transformData) => {
-        this.controlMousedownProcess(transformData, 0.5, 0.0);
-        return true;
-      },
-      name: 'mraStart'
-    });
-  }
-
-  controlMousedownProcess(transformData, rx, ry) {
-    return;
-  }
   /**
    * Returns object representation of an instance
    * @method toObject
    * @param {Array} [propertiesToInclude] Any properties that you might want to additionally include in the output
    * @return {Object} object representation of an instance
    */
-
-  getObject() {
-    const object = {};
-
-    const keys = [
-      '_id', // string, the id of the object
-      'angle', //  integer, angle for recording rotating
-      'backgroundColor', // string,  background color, works when the image is transparent
-      'fill', // the font color
-      'width', // integer, width of the object
-      'height', // integer, height of the object
-      'left', // integer left for position
-      'lines', // array, the arrows array [{…}]
-      'locked', // boolean, lock status for the widget， this is connected to lock
-      'lockMovementX', // boolean, lock the verticle movement
-      'lockMovementY', // boolean, lock the horizontal movement
-      'lockScalingFlip', // boolean,  make it can not be inverted by pulling the width to the negative side
-      'obj_type', // object type
-      'originX', // string, Horizontal origin of transformation of an object (one of "left", "right", "center") See http://jsfiddle.net/1ow02gea/244/ on how originX/originY affect objects in groups
-      'originY', // string, Vertical origin of transformation of an object (one of "top", "bottom", "center") See http://jsfiddle.net/1ow02gea/244/ on how originX/originY affect objects in groups
-      'scaleX', // nunber, Object scale factor (horizontal)
-      'scaleY', // number, Object scale factor (vertical)
-      'selectable', // boolean, When set to `false`, an object can not be selected for modification (using either point-click-based or group-based selection). But events still fire on it.
-      'top', // integer, Top position of an object. Note that by default it's relative to object top. You can change this by setting originY={top/center/bottom}
-      'userNo', // string, the unique id for the user, one user id could open mutiple browser, each browser has unique user no
-      'userId', // string, user identity
-      'whiteboardId', // whiteboard id, string
-      'zIndex', // the index for the object on whiteboard, integer
-      'version', // version of the app, string
-      'isPanel', // is this a panel, boolean
-      'panelObj', // if this is a panel, the id of the panel, string
-      'relationship', // array, viewporttransform
-      'subObjList', // ["5H9qYfNGt4vizhcuS"] array list _id for sub objects
-      'fontFamily', // string, font family
-      'fontSize', // integer, font size
-      'fontWeight', // integer, font weight
-      'lineHeight', // integer, font height
-      'text', // string, text
-      'textAlign', // string, alignment
-      'editable',
-      'shapeScaleX',
-      'shapeScaleY',
-      'maxHeight',
-      'tempTop',
-      'fixedScaleChange',
-      'preTop'
-    ];
-    keys.forEach((key) => {
-      object[key] = this[key];
-    });
-    return object;
-  }
-
   toObject(propertiesToInclude: Array<any>): object {
     return super.toObject(
       ['minWidth', 'splitByGrapheme'].concat(propertiesToInclude)
     );
   }
-  /**extend function for fronted */
-  checkTextboxChange() { }
-
 }
 
 classRegistry.setClass(Textbox);

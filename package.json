@@ -1,5 +1,5 @@
 {
-  "name": "martin-fabric",
+  "name": "fabric",
   "description": "Object model for HTML5 canvas, and SVG-to-canvas parser. Backed by jsdom and node-canvas.",
   "homepage": "https://canvas.aliensoft.com.cn/",
   "version": "6.0.0-beta8.6",
