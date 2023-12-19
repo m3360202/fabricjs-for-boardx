@@ -304,5 +304,5 @@ export const createImageDefaultControls = () => ({
   ...createObjectDefaultControls(),
 });
 export const createFileDefaultControls = () => ({
-  ...createObjectFileControls(),
+  ...createObjectDefaultControls(),
 });

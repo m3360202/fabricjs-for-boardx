@@ -778,7 +778,7 @@ export class Arrow extends Line {
     isClosed = isClosed ? isClosed : false;
     numOfSegments = numOfSegments ? numOfSegments : 16;
 
-    const _pts = [];
+    let _pts = [];
     const res = []; // clone array
     let x;
     let y; // our x,y coords
